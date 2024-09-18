@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EEG Processing Result</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 50px; }
+    .container { max-width: 800px; margin: 0 auto; text-align: center; }
+    h1 { text-align: center; }
+    img { max-width: 100%; height: auto; }
+    .download-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .download-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>EEG Data Processing Complete</h1>
+    <h2>Visualization of Processed Data</h2>
+    {% if plot_image %}
+      <img src="data:image/png;base64,{{ plot_image }}" alt="EEG Plot">
+    {% else %}
+      <p>No plot available.</p>
+    {% endif %}
+    <br>
+    <!-- Updated download link -->
+    <a href="{{ url_for('download_zip', filename=zip_filename) }}" class="download-button">Download Processed Files</a>
+  </div>
+</body>
+</html>
+

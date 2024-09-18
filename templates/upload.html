@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EEG Data Processor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 50px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    h1 { text-align: center; }
+    form { display: flex; flex-direction: column; }
+    label { margin-top: 10px; }
+    input, select { padding: 5px; font-size: 1em; }
+    input[type="submit"] { margin-top: 20px; padding: 10px; }
+    small { color: #555; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>EEG Data Processor</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+      <label for="files">Select EEG files to upload:</label>
+      <input type="file" name="files" id="files" multiple required>
+
+      <!-- Original Sampling Rates would be displayed here after files are uploaded -->
+      {% if original_sfreqs %}
+        <h3>Original Sampling Rates:</h3>
+        <ul>
+          {% for filename, sfreq in original_sfreqs.items() %}
+            <li>{{ filename }}: {{ sfreq }} Hz</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <label for="sampling_rate">New Sampling Rate (Hz):</label>
+      <input type="number" name="sampling_rate" id="sampling_rate" min="0" step="0.1" value="0">
+      <small>Enter 0 to keep the original sampling rate.</small>
+
+      <label for="notch_freq">Notch Filter Frequency (Hz):</label>
+      <input type="number" name="notch_freq" id="notch_freq" min="0" step="0.1" value="0">
+      <small>Enter 0 for no notch filtering.</small>
+
+      <label for="filter_low">High-pass Filter (Hz):</label>
+      <input type="number" name="filter_low" id="filter_low" min="0" step="0.1" value="0">
+      <small>Enter 0 for no high-pass filtering.</small>
+
+      <label for="filter_high">Low-pass Filter (Hz):</label>
+      <input type="number" name="filter_high" id="filter_high" min="0" step="0.1" value="0">
+      <small>Enter 0 for no low-pass filtering.</small>
+
+      <label for="electrode_placement">Desired Electrode Placement:</label>
+      <select name="electrode_placement" id="electrode_placement">
+        <option value="">--Select Montage--</option>
+        <option value="standard_1020">Standard 10-20</option>
+        <option value="standard_1005">Standard 10-05</option>
+        <option value="biosemi64">BioSemi 64</option>
+        <!-- Add more montages as needed -->
+      </select>
+      <small>Leave blank if not applicable.</small>
+
+      <label for="reference_choice">Reference Electrode:</label>
+      <select name="reference_choice" id="reference_choice">
+        <option value="">--Select Reference--</option>
+        <option value="average">Average Reference</option>
+        <option value="Cz">Cz</option>
+        <option value="Fpz">Fpz</option>
+        <!-- Add more options as needed -->
+      </select>
+      <small>Leave blank to keep original reference.</small>
+
+      <label for="output_format">Output Format:</label>
+      <select name="output_format" id="output_format">
+        <option value="fif">FIF (MNE default)</option>
+        <option value="edf">EDF</option>
+      </select>
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</body>
+</html>
